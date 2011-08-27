@@ -1,7 +1,6 @@
 /* App Controllers */
 
-
-function MyCtrl1() {
+App.Controllers.TodoController =function () {
   var self = this;
   
   self.newTodo = "";
@@ -66,21 +65,4 @@ function MyCtrl1() {
   };
   
 }
-MyCtrl1.$inject = [];
-
-
-function MyCtrl2($location) {
-  var self = this;
-  
-  self.users = [{
-                  firstName: "Max"
-               },
-               {
-                  firstName: "Steffi"
-               }];
-  
-  self.goBack = function(){
-    $location.update({hashPath: '/view1'});
-  };
-}
-MyCtrl2.$inject = ['$location'];
+App.Controllers.TodoController.$inject = [];

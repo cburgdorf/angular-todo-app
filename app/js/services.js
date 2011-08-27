@@ -5,7 +5,7 @@
  */
 angular.service('myAngularApp', function($route, $location, $window) {
 
-  $route.when('/main', {template: 'partials/main.html', controller: MyCtrl1});
+  $route.when('/main', {template: 'partials/main.html', controller: App.Controllers.TodoController});
   $route.when('/credits', {template: 'partials/credits.html'});
 
   var self = this;
