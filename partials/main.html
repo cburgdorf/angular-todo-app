@@ -1,0 +1,70 @@
+    <div id="todoapp">
+        <div class="title">
+            <h1>
+                Todos
+            </h1>
+        </div>
+        <div class="content">
+            <div id="todo-form">
+            </div>
+            <form id="todo-form" ng:submit="addTodo()">
+                <input id="new-todo" name="newTodo" placeholder="What needs to be done?" type="text">
+                <span class="ui-tooltip-top" ng:show="showHitEnterHint()">
+                    Press Enter to save this task
+                </span>
+            </form>
+            <div id="todos">
+                <ul id="todo-list">
+                  <li class="todo" ng:class="'editing-' + todo.editing + ' done-' + todo.done" ng:repeat="todo in todos">
+                    <div class="display">
+                      <input class="check" type="checkbox" name="todo.done" / >
+                      <div ng:click="editTodo(todo)" class="todo-content"> {{ todo.content }} </div>
+                      <span class="todo-destroy" ng:click="removeTodo(todo)"></span>
+                   </div>
+                  <div class="edit">
+                    <form ng:submit="finishEditing(todo)">
+                        <input class="todo-input" my:focus="todo.editing" my:blur="finishEditing(todo)" name="todo.content" type="text">
+                    </form>
+                  </div>
+                  </li>
+                </ul>
+            </div>
+            <div id="todo-stats">
+              <span class="todo-count" ng:show="hasTodos()">
+                <span class="number">{{ remainingTodos() }}</span>
+                <span class="word">items</span> left.
+              </span>
+              <span class="todo-clear" ng:show="hasFinishedTodos()">
+                  <a ng:click="clearCompletedItems()">
+                  Clear <span class="number-done">{{ finishedTodos() }}</span>
+                  completed <span class="word-done">item</span>
+                  </a>
+              </span>
+        </div>
+        </div>
+    </div>
+    <ul id="instructions">
+      <li>Click to edit a todo.</li>
+    </ul>
+    <div id="credits">
+        <p>
+            Originally Created by
+            <br>
+            <a href="http://jgn.me/">Jérôme Gravel-Niquet</a>
+        </p>
+        <p>
+            Rewritten by
+            <br>
+            <a href="http://cburgdorf.wordpress.com/">Christoph Burgdorf</a>
+        </p>
+        <p>
+            This clone of backbones todo App has been written with
+            <a href="http://angularjs.org">AngularJS </a>
+            Feel free to fork the code and play a little! Find it here at
+            <a href="https://github.com/cburgdorf/Angular-ToDo-App"> my github repository</a>
+        </p>
+        <p>
+         Ah and one more thing, I also put the <a href="#/credits">credits</a> here to show that routing is build in and
+         really is a breeze.
+        </p>
+    </div>
