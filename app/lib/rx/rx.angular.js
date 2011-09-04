@@ -34,29 +34,37 @@
 
     observable.FromAngularScope = function (angularScope, propertyName) {
         return observableCreate(function (observer) {
-            var onNext = function(){
-                observer.OnNext(angularScope[propertyName]);
-            };
-            angularScope.$watch(function(){
+            var unwatch = angularScope.$watch(function(){
               return angularScope[propertyName];
             }, 
-            onNext, 
             function(){
-                observer.OnError(angularScope[propertyName]);
-            }, false);
+                observer.OnNext(angularScope[propertyName]);
+            });
             return function () {
-               // since AngularJS has no API to unbind we set the previous registered
-               // callback to a empty dummy function (far from perfect!)
-               onNext = function() {};
+               unwatch();
             };
-        });
+        })
+        .Skip(1); //In AngularJS 0.10.x There is no way to avoid initial evaluation. So we take care about it!
     };
 
     root.Observable.prototype.ToOutputProperty = function (scope, propertyName) {
         var disposable = this.Subscribe(function (data) {
             scope[propertyName] = data;
-            scope.$eval();
+            scope.$apply();
         });
+        
+        scope.$on('$destroy', function(event){
+          //we need to asure that we only dispose the observable when it's our scope that
+          //was destroyed.
+          
+          //TODO: Figure out if thats enought to asure the above (e.g what happens when
+          //a child scope will be destroyed but ours won't be affected. Or the other way around, 
+          //a higher scope will be destroyed does it mean that $destroy() will be called up on our
+          //scope, too or will our scope get destroyed without actually calling $destroy() on it?
+          if (event.targetScope === scope){
+            disposable.Dispose();
+          }          
+        });        
     };
 
 })();

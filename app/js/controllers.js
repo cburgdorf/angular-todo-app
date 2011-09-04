@@ -9,7 +9,8 @@ App.Controllers.TodoController =function () {
     self.todos.push({
       content: self.newTodo,
       done: false,
-      editing: false
+      editing: false,
+      test: false
     });
     self.newTodo = "";
   };
