@@ -9,7 +9,8 @@ App.Controllers.TodoController =function () {
     self.todos.push({
       content: self.newTodo,
       done: false,
-      editing: false
+      editing: false,
+      test: false
     });
     self.newTodo = "";
   };
@@ -62,7 +63,7 @@ App.Controllers.TodoController =function () {
   
    /*
         The following code deals with hiding the hint *while* you are typing,
-        showing it once you did *finish* righting (aka 500 ms since you hit the last key)
+        showing it once you did *finish* typing (aka 500 ms since you hit the last key)
         *incase* the result is a non empty string 
    */
    Rx.Observable.FromAngularScope(self, "newTodo")
