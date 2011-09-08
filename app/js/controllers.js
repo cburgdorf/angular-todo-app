@@ -35,7 +35,7 @@ App.Controllers.TodoController =function () {
   var countTodos = function(done){
       return function(){
           return angular.Array.count(self.todos, function(x){
-                return x.done === (done === "done" ? true : false);
+                return x.done === (done === "done");
             });
       }
   };  
