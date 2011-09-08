@@ -3,16 +3,7 @@
         root = (typeof ProvideCustomRxRootObject == "undefined") ? global.Rx : ProvideCustomRxRootObject();
 
     var observable = root.Observable;
-    var asyncSubject = root.AsyncSubject;
     var observableCreate = observable.Create;
-    var disposableEmpty = root.Disposable.Empty;
-
-    if (!Object.getPrototypeOf) {
-        Object.getPrototypeOf = function getPrototypeOf(object) {
-            return object.__proto__ || object.constructor.prototype;
-            // or undefined if not available in this engine
-        };
-    }
 
     observable.FromAngularScope = function (angularScope, propertyName) {
         return observableCreate(function (observer) {
@@ -29,7 +20,7 @@
         .Skip(1); //In AngularJS 0.10.x There is no way to avoid initial evaluation. So we take care about it!
     };
 
-    root.Observable.prototype.ToOutputProperty = function (scope, propertyName) {
+    observable.prototype.ToOutputProperty = function (scope, propertyName) {
         var disposable = this.Subscribe(function (data) {
             scope[propertyName] = data;
             scope.$apply();
