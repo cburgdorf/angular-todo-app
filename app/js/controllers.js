@@ -1,29 +1,23 @@
 /* App Controllers */
 
-App.Controllers.TodoController = function () {
+App.Controllers.TodoController = function (todoService) {
     var self = this;
 
     self.newTodo = "";
 
     self.addTodo = function() {
-        self.todos.push({
-            content: self.newTodo,
-            done: false,
-            editing: false
-        });
+
+        todoService.add({ content: self.newTodo }, syncWithDatabase);
         self.newTodo = "";
     };
 
     self.editTodo = function(todo) {
-        //cancel any active editing operation
-        angular.forEach(self.todos, function(value) {
-            value.editing = false;
-        });
-        todo.editing = true;
+        todoService.edit(todo);
     };
 
     self.finishEditing = function(todo) {
         todo.editing = false;
+        todoService.update();
     };
 
     self.removeTodo = function(todo) {
@@ -31,6 +25,14 @@ App.Controllers.TodoController = function () {
     };
 
     self.todos = [];
+
+    var syncWithDatabase = function(){
+        todoService.getAll(function(result){
+            self.todos = result;
+        });
+    };
+
+    syncWithDatabase();
 
     var countTodos = function(done) {
         return function() {
@@ -75,4 +77,4 @@ App.Controllers.TodoController = function () {
         })
         .ToOutputProperty(self, "showHitEnterHint");
 };
-App.Controllers.TodoController.$inject = [];
+App.Controllers.TodoController.$inject = ['todoService'];
