@@ -25,7 +25,7 @@ angular.service('persistenceService', function() {
     persistence.store.websql.config(persistence, 'todoDb', 'database for the todo app', 5 * 1024 * 1024);
 
     //persistence.store.memory.config(persistence, 'todoDb', 'database for the todo app', 5 * 1024 * 1024);
-
+    
     return persistence;
     
 }, { $eager: true});
@@ -43,6 +43,10 @@ angular.service('todoService', function(persistenceService) {
         done: "BOOL",
         editing: "BOOL"
     });
+
+    self.syncSchema = function(callback){
+      persistence.schemaSync(callback);
+    };
 
     self.add = function(blueprint, callback){
         blueprint = angular.extend({ done: false, editing: false}, blueprint);
@@ -64,6 +68,11 @@ angular.service('todoService', function(persistenceService) {
         todo.editing = true;
         persistence.flush();
     };
+
+    self.remove = function(todo, callback){
+        persistence.remove(todo);
+        persistence.flush(callback);
+    }
 
     self.update = function(){
         persistence.flush();

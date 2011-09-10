@@ -21,7 +21,7 @@ App.Controllers.TodoController = function (todoService) {
     };
 
     self.removeTodo = function(todo) {
-        angular.Array.remove(self.todos, todo);
+        todoService.remove(todo, syncWithDatabase);
     };
 
     self.todos = [];
@@ -29,10 +29,11 @@ App.Controllers.TodoController = function (todoService) {
     var syncWithDatabase = function(){
         todoService.getAll(function(result){
             self.todos = result;
+            self.$apply();
         });
     };
 
-    syncWithDatabase();
+    todoService.syncSchema(syncWithDatabase);
 
     var countTodos = function(done) {
         return function() {
