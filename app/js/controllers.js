@@ -40,7 +40,7 @@ App.Controllers.TodoController = function (todoService) {
             });
 
             //self.todos = result;
-            self.$apply();
+            self.$digest()
         });
     };
 
