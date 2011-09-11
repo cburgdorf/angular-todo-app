@@ -69,8 +69,10 @@ angular.service('todoService', function(persistenceService) {
             .all()
             .filter('ID','=',todo.id)
             .one(function(item){
-               angular.extend(item, todo);
-               persistence.flush();
+                if (!item) return;
+
+                angular.extend(item, todo);
+                persistence.flush();
             });
     };
 
