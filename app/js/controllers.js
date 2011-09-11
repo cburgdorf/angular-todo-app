@@ -6,18 +6,20 @@ App.Controllers.TodoController = function (todoService) {
     self.newTodo = "";
 
     self.addTodo = function() {
-
         todoService.add({ content: self.newTodo }, syncWithDatabase);
         self.newTodo = "";
     };
 
-    self.editTodo = function(todo) {
-        todoService.edit(todo);
+    self.startEditing = function(todo) {
+        todo.editing = true;
     };
 
     self.finishEditing = function(todo) {
         todo.editing = false;
-        todoService.update();
+    };
+
+    self.update = function(todo){
+        todoService.update(todo);
     };
 
     self.removeTodo = function(todo) {
@@ -27,8 +29,17 @@ App.Controllers.TodoController = function (todoService) {
     self.todos = [];
 
     var syncWithDatabase = function(){
+        self.todos = [];
         todoService.getAll(function(result){
-            self.todos = result;
+
+            angular.forEach(result, function(todo){
+               //binding directly to the persistencejs entity is just not working out smoothly,
+               //because it has issues with the special getter/setter construct that persistencejs uses
+               var todo = angular.extend({}, todo._data, {id: todo.id});
+               self.todos.push(todo);
+            });
+
+            //self.todos = result;
             self.$apply();
         });
     };
@@ -48,11 +59,7 @@ App.Controllers.TodoController = function (todoService) {
     self.finishedTodos = countTodos("done");
 
     self.clearCompletedItems = function() {
-        var oldTodos = self.todos;
-        self.todos = [];
-        angular.forEach(oldTodos, function(todo) {
-            if (!todo.done) self.todos.push(todo);
-        });
+        todoService.clearCompletedItems(syncWithDatabase);
     };
 
     self.hasFinishedTodos = function() {

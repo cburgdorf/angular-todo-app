@@ -17,8 +17,8 @@
                 <ul id="todo-list">
                   <li class="todo" ng:class="'editing-' + todo.editing + ' done-' + todo.done" ng:repeat="todo in todos">
                     <div class="display">
-                      <input class="check" type="checkbox" name="todo.done" / >
-                      <div ng:click="editTodo(todo)" class="todo-content"> {{ todo.content }} </div>
+                      <input class="check" type="checkbox" name="todo.done" ng:change="update(todo)" / >
+                      <div ng:click="startEditing(todo)" class="todo-content"> {{ todo.content }} </div>
                       <span class="todo-destroy" ng:click="removeTodo(todo)"></span>
                    </div>
                   <div class="edit">

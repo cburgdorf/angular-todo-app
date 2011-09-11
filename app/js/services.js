@@ -57,34 +57,28 @@ angular.service('todoService', function(persistenceService) {
         });
     };
 
-    self.edit = function(todo){
-        //cancel all active editing operations
-        Todo
-            .all()
-            .filter('editing','=','true')
-            .each(function(obj){
-                obj.editing = false;
-            });
-        todo.editing = true;
-        persistence.flush();
-    };
-
     self.remove = function(todo, callback){
-        persistence.remove(todo);
-        persistence.flush(callback);
+         Todo
+            .all()
+            .filter('ID','=',todo.id)
+            .destroyAll(callback);
     }
 
-    self.update = function(){
-        persistence.flush();
+    self.update = function(todo){
+        Todo
+            .all()
+            .filter('ID','=',todo.id)
+            .one(function(item){
+               angular.extend(item, todo);
+               persistence.flush();
+            });
     };
 
-    self.clearCompletedItems = function(){
+    self.clearCompletedItems = function(callback){
         Todo
             .all()
             .filter('done','=','true')
-            .each(function(obj){
-                persistence.remove(obj);
-            });
+            .destroyAll(callback);
     };
 
     self.getAll = function(callback){
