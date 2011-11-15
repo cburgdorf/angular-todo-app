@@ -67,9 +67,9 @@ App.Controllers.TodoController = function () {
      */
 
     Rx.Observable
-    .FromAngularScope(self, "newTodo")
-    .SelectThenThrottledSelect(function(x){ return false; }, 500, function(x){ return x.length > 0; })
-    .ToOutputProperty(self, "showHitEnterHint");
+      .FromAngularScope(self, "newTodo")
+      .SelectThenThrottledSelect(function(x){ return false; }, 500, function(x){ return x.length > 0; })
+      .ToOutputProperty(self, "showHitEnterHint");
 
 };
 App.Controllers.TodoController.$inject = [];
