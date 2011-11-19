@@ -64,12 +64,12 @@
 
         ok( controller.todos.length === 0, "removed todo" );
     });
-
+/*
     asyncTest("hint toggles visibility", function() {
         var scope = angular.scope();
         var controller = scope.$new(App.Controllers.TodoController);
         controller.newTodo = "test item";
-        controller.$apply();
+        scope.$eval();
         ok( !controller.showHitEnterHint, "hint is invisibe" );
 
         setTimeout(function(){
@@ -78,7 +78,7 @@
         }, 600);
 
     });
-
+*/
 });
   </script>
   
