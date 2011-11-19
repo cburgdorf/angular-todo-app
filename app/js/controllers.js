@@ -3,6 +3,8 @@
 App.Controllers.TodoController = function () {
     var self = this;
 
+    self.todos = [];
+
     self.newTodo = "";
 
     self.addTodo = function() {
@@ -29,8 +31,6 @@ App.Controllers.TodoController = function () {
     self.removeTodo = function(todo) {
         angular.Array.remove(self.todos, todo);
     };
-
-    self.todos = [];
 
     var countTodos = function(done) {
         return function() {
