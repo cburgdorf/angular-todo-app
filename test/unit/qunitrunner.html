@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+                    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <link rel="stylesheet" href="../lib/qunit/qunit.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="../lib/qunit/qunit.js"></script>
+    <script> var App = {
+      Controllers : {}
+    }</script>
+    <script src="../../app/lib/angular/angular.js"></script>
+    <script src="../../app/lib/rx/rx.js"></script>
+    <script src="../../app/lib/rx/rx.angular.js"></script>
+    <script src="../../app/lib/rx/rx.extensions.js"></script>
+    <script type="text/javascript" src="../../app/js/controllers.js"></script>
+    <script>
+    $(document).ready(function(){
+    
+    test("test app init process", function() {
+        var scope = angular.scope();
+        var controller = scope.$new(App.Controllers.TodoController);
+
+        ok( controller.newTodo === "", "newTodo is set to an empty string on load" );
+        ok( controller.todos.length === 0, "todos is set to an empty array on load" );
+    });
+
+    test("should create new todo", function() {
+        var scope = angular.scope();
+        var controller = scope.$new(App.Controllers.TodoController);
+        controller.newTodo = "test item";
+        controller.addTodo();
+
+        ok( controller.todos.length === 1, "added one new todo item" );
+        ok( controller.todos[0].content === "test item", "content property matches 'test item'" );
+        ok( !controller.todos[0].done, "new todo is undone" );
+        ok( !controller.todos[0].editing, "new todo is not in edit mode" );
+        ok( controller.todos[0].content === "test item", "content property matches 'test item'" );
+    });
+
+    test("editTodo/finishEditing should toggle todos edit property", function() {
+        var scope = angular.scope();
+        var controller = scope.$new(App.Controllers.TodoController);
+        controller.newTodo = "test item";
+        controller.addTodo();
+
+        ok( controller.todos.length === 1, "todo exists" );
+        ok( !controller.todos[0].editing, "new todo is not in edit mode" );
+
+        controller.editTodo(controller.todos[0]);
+        ok( controller.todos[0].editing, "todo is in edit mode" );
+        controller.finishEditing(controller.todos[0]);
+        ok( !controller.todos[0].editing, "todo is not in edit mode" );
+    });
+
+    test("removeTodo should delete todo from collection", function() {
+        var scope = angular.scope();
+        var controller = scope.$new(App.Controllers.TodoController);
+        controller.newTodo = "test item";
+        controller.addTodo();
+
+        ok( controller.todos.length === 1, "todo exists" );
+
+        controller.removeTodo(controller.todos[0]);
+
+        ok( controller.todos.length === 0, "removed todo" );
+    });
+/*
+    asyncTest("hint toggles visibility", function() {
+        var scope = angular.scope();
+        var controller = scope.$new(App.Controllers.TodoController);
+        controller.newTodo = "test item";
+        scope.$eval();
+        ok( !controller.showHitEnterHint, "hint is invisibe" );
+
+        setTimeout(function(){
+            ok(controller.showHitEnterHint, "hint is visible");
+            start();
+        }, 600);
+
+    });
+*/
+});
+  </script>
+  
+</head>
+<body>
+  <h1 id="qunit-header">QUnit example</h1>
+ <h2 id="qunit-banner"></h2>
+ <div id="qunit-testrunner-toolbar"></div>
+ <h2 id="qunit-userAgent"></h2>
+ <ol id="qunit-tests"></ol>
+ <div id="qunit-fixture">test markup, will be hidden</div>
+</body>
+</html>
